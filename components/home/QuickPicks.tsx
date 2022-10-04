@@ -16,8 +16,11 @@ import {
   SecondaryTextColor,
   SongMetaStyle,
 } from '../common/styles';
+import { useNavigation } from '@react-navigation/native';
 
 const QuickPicks = () => {
+  const navigate = useNavigation();
+
   return (
     <SectionContainer>
       <Text style={styles.lead}>Start radio based on a song</Text>
@@ -33,7 +36,7 @@ const QuickPicks = () => {
                   .map((i, j) => (
                     <Pressable
                       android_ripple={{ color: AndroidRippleColor }}
-                      onPress={() => {}}
+                      onPress={() => navigate.navigate('Player')}
                       style={styles.songItem}
                       key={i + j}
                     >

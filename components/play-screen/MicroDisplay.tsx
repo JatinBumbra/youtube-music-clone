@@ -1,4 +1,3 @@
-import { Dispatch, SetStateAction } from 'react';
 import { View, StyleSheet, Pressable, Text } from 'react-native';
 import { MaterialIcons } from '@expo/vector-icons';
 import {
@@ -8,19 +7,21 @@ import {
   SongMetaStyle,
   SongTitleStyle,
 } from '../common/styles';
+import { useNavigation } from '@react-navigation/native';
 
-const MicroDisplay = ({
-  percent,
-  setOpen,
-}: {
-  percent: number;
-  setOpen: Dispatch<SetStateAction<boolean>>;
-}) => {
+const MicroDisplay = () => {
+  const navigation = useNavigation();
+
+  const percent = 1;
+
   return (
     <View style={styles.container}>
       <View style={styles.miniPlayer}>
         <View style={styles.flexDisplay}>
-          <Pressable onPress={() => setOpen(true)} style={styles.flexDisplay}>
+          <Pressable
+            style={styles.flexDisplay}
+            onPress={() => navigation.navigate('Player')}
+          >
             <View style={styles.cover}></View>
             <View style={styles.songInfo}>
               <Text style={SongTitleStyle}>Cinderella Man</Text>

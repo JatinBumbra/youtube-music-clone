@@ -1,22 +1,21 @@
-import { useState } from 'react';
-import { View, StyleSheet } from 'react-native';
+import { NavigationContainer } from '@react-navigation/native';
+import { createStackNavigator } from '@react-navigation/stack';
 import Home from './components/home';
-import PlayScreen from './components/play-screen';
+import FullDisplay from './components/play-screen/FullDisplay';
+
+const Stack = createStackNavigator();
 
 export default function App() {
-  const [showPlayScreen, setShowPlayScreen] = useState<boolean>(true);
-
   return (
-    <View style={styles.container}>
-      <Home />
-      <PlayScreen open={showPlayScreen} setOpen={setShowPlayScreen} />
-    </View>
+    <NavigationContainer>
+      <Stack.Navigator screenOptions={{ headerShown: false }}>
+        <Stack.Group>
+          <Stack.Screen name='Home' component={Home} />
+        </Stack.Group>
+        <Stack.Group screenOptions={{ presentation: 'modal' }}>
+          <Stack.Screen name='Player' component={FullDisplay} />
+        </Stack.Group>
+      </Stack.Navigator>
+    </NavigationContainer>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    backgroundColor: 'black',
-    minHeight: '100%',
-  },
-});

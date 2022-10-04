@@ -1,12 +1,5 @@
-import { Dispatch, SetStateAction, useState } from 'react';
-import {
-  View,
-  StyleSheet,
-  Dimensions,
-  Pressable,
-  Text,
-  GestureResponderEvent,
-} from 'react-native';
+import { useState } from 'react';
+import { View, StyleSheet, Dimensions, Pressable, Text } from 'react-native';
 import { Entypo, Feather, MaterialIcons, Ionicons } from '@expo/vector-icons';
 import {
   AndroidRippleColor,
@@ -15,121 +8,129 @@ import {
   SecondaryTextColor,
 } from '../common/styles';
 import Slider from '@react-native-community/slider';
+import ScreenContainer from '../common/ScreenContainer';
+import { useNavigation } from '@react-navigation/native';
 
-const FullDisplay = ({
-  percent,
-  setPercent,
-  setOpen,
-}: {
-  percent: number;
-  setPercent: Dispatch<SetStateAction<number>>;
-  setOpen: Dispatch<SetStateAction<boolean>>;
-}) => {
+const FullDisplay = () => {
+  const navigation = useNavigation();
+
+  const [percent, setPercent] = useState<number>(0);
+
   return (
-    <View style={styles.container}>
-      <View style={styles.controls}>
-        <Pressable hitSlop={32} onPress={() => setOpen(false)}>
-          <Entypo
-            name='chevron-thin-down'
-            size={16}
-            color={SecondaryTextColor}
-          />
-        </Pressable>
-        <Pressable hitSlop={32} onPress={() => {}}>
-          <Feather name='more-vertical' size={24} color={SecondaryTextColor} />
-        </Pressable>
-      </View>
-      <View style={styles.mainContent}>
-        <View style={styles.cover}></View>
-        <View style={styles.titleContainer}>
-          <Feather name='thumbs-down' size={24} color={SecondaryTextColor} />
-          <Text style={styles.title}>Cinderella Man</Text>
-          <Feather name='thumbs-up' size={24} color={SecondaryTextColor} />
+    <ScreenContainer>
+      <View style={styles.container}>
+        <View style={styles.controls}>
+          <Pressable hitSlop={32} onPress={() => navigation.goBack()}>
+            <Entypo
+              name='chevron-thin-down'
+              size={16}
+              color={SecondaryTextColor}
+            />
+          </Pressable>
+          <Pressable hitSlop={32}>
+            <Feather
+              name='more-vertical'
+              size={24}
+              color={SecondaryTextColor}
+            />
+          </Pressable>
         </View>
-        <Text style={styles.artist}>Eminem</Text>
+        <View style={styles.mainContent}>
+          <View style={styles.cover}></View>
+          <View style={styles.titleContainer}>
+            <Feather name='thumbs-down' size={24} color={SecondaryTextColor} />
+            <Text style={styles.title}>Cinderella Man</Text>
+            <Feather name='thumbs-up' size={24} color={SecondaryTextColor} />
+          </View>
+          <Text style={styles.artist}>Eminem</Text>
 
-        <View style={styles.playTimeContainer}>
-          <Slider
-            minimumValue={0}
-            maximumValue={1}
-            thumbTintColor={PrimaryTextColor}
-            minimumTrackTintColor={PrimaryTextColor}
-            maximumTrackTintColor={SecondaryTextColor}
-            tapToSeek
-            value={percent}
-            onValueChange={setPercent}
-          />
+          <View style={styles.playTimeContainer}>
+            <Slider
+              minimumValue={0}
+              maximumValue={1}
+              thumbTintColor={PrimaryTextColor}
+              minimumTrackTintColor={PrimaryTextColor}
+              maximumTrackTintColor={SecondaryTextColor}
+              tapToSeek
+              value={percent}
+              onValueChange={setPercent}
+            />
+            <View style={styles.controls}>
+              <Text style={styles.time}>2:00</Text>
+              <Text style={styles.time}>4:00</Text>
+            </View>
+          </View>
+
           <View style={styles.controls}>
-            <Text style={styles.time}>2:00</Text>
-            <Text style={styles.time}>4:00</Text>
+            {[
+              {
+                icon: (
+                  <Ionicons
+                    name='shuffle'
+                    size={30}
+                    color={SecondaryTextColor}
+                  />
+                ),
+                onPress: () => {},
+              },
+              {
+                icon: (
+                  <MaterialIcons
+                    name='skip-previous'
+                    size={36}
+                    color={PrimaryTextColor}
+                  />
+                ),
+                onPress: () => {},
+              },
+              {
+                icon: (
+                  <MaterialIcons
+                    name='pause'
+                    size={40}
+                    color={PrimaryTextColor}
+                    style={styles.playControl}
+                  />
+                ),
+                onPress: () => {},
+              },
+              {
+                icon: (
+                  <MaterialIcons
+                    name='skip-next'
+                    size={36}
+                    color={PrimaryTextColor}
+                  />
+                ),
+                onPress: () => {},
+              },
+              {
+                icon: (
+                  <MaterialIcons
+                    name='repeat'
+                    size={30}
+                    color={SecondaryTextColor}
+                  />
+                ),
+                onPress: () => {},
+              },
+            ].map((item, i) => (
+              <Pressable
+                key={i}
+                onPress={item.onPress}
+                hitSlop={20}
+                android_ripple={{
+                  color: AndroidRippleColor,
+                  borderless: true,
+                }}
+              >
+                {item.icon}
+              </Pressable>
+            ))}
           </View>
         </View>
-
-        <View style={styles.controls}>
-          {[
-            {
-              icon: (
-                <Ionicons name='shuffle' size={30} color={SecondaryTextColor} />
-              ),
-              onPress: () => {},
-            },
-            {
-              icon: (
-                <MaterialIcons
-                  name='skip-previous'
-                  size={36}
-                  color={PrimaryTextColor}
-                />
-              ),
-              onPress: () => {},
-            },
-            {
-              icon: (
-                <MaterialIcons
-                  name='pause'
-                  size={40}
-                  color={PrimaryTextColor}
-                  style={styles.playControl}
-                />
-              ),
-              onPress: () => {},
-            },
-            {
-              icon: (
-                <MaterialIcons
-                  name='skip-next'
-                  size={36}
-                  color={PrimaryTextColor}
-                />
-              ),
-              onPress: () => {},
-            },
-            {
-              icon: (
-                <MaterialIcons
-                  name='repeat'
-                  size={30}
-                  color={SecondaryTextColor}
-                />
-              ),
-              onPress: () => {},
-            },
-          ].map((item, i) => (
-            <Pressable
-              key={i}
-              onPress={item.onPress}
-              hitSlop={20}
-              android_ripple={{
-                color: AndroidRippleColor,
-                borderless: true,
-              }}
-            >
-              {item.icon}
-            </Pressable>
-          ))}
-        </View>
       </View>
-    </View>
+    </ScreenContainer>
   );
 };
 
