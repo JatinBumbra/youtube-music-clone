@@ -1,17 +1,15 @@
-import { StatusBar, View, StyleSheet } from 'react-native';
-import BottomBar from './components/BottomBar';
-import FilterChips from './components/FilterChips';
-import Header from './components/Header';
-import HomeList from './components/HomeList';
+import { useState } from 'react';
+import { View, StyleSheet } from 'react-native';
+import Home from './components/home';
+import PlayScreen from './components/play-screen';
 
 export default function App() {
+  const [showPlayScreen, setShowPlayScreen] = useState<boolean>(true);
+
   return (
     <View style={styles.container}>
-      <StatusBar />
-      <Header />
-      <FilterChips />
-      <HomeList />
-      <BottomBar />
+      <Home />
+      <PlayScreen open={showPlayScreen} setOpen={setShowPlayScreen} />
     </View>
   );
 }

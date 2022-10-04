@@ -6,13 +6,13 @@ import {
   Dimensions,
   Pressable,
 } from 'react-native';
-import SectionContainer from './common/SectionContainer';
-import SectionTitle from './common/SectionTitle';
+import SectionContainer from '../common/SectionContainer';
+import SectionTitle from '../common/SectionTitle';
 import {
   PlaceholderBgColor,
   SongMetaStyle,
   SongTitleStyle,
-} from './common/styles';
+} from '../common/styles';
 
 const RecommendedMusicVideos = () => {
   return (

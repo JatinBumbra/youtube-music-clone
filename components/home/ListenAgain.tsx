@@ -1,7 +1,7 @@
 import { View, ScrollView, Text, StyleSheet, Pressable } from 'react-native';
-import SectionContainer from './common/SectionContainer';
-import SectionTitle from './common/SectionTitle';
-import { PlaceholderBgColor, SongTitleStyle } from './common/styles';
+import SectionContainer from '../common/SectionContainer';
+import SectionTitle from '../common/SectionTitle';
+import { PlaceholderBgColor, SongTitleStyle } from '../common/styles';
 
 const ListenAgain = () => {
   return (

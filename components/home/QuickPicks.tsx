@@ -7,15 +7,15 @@ import {
   Dimensions,
 } from 'react-native';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
-import SectionTitle from './common/SectionTitle';
-import SectionContainer from './common/SectionContainer';
+import SectionTitle from '../common/SectionTitle';
+import SectionContainer from '../common/SectionContainer';
 import {
   AndroidRippleColor,
   PlaceholderBgColor,
   PrimaryTextColor,
   SecondaryTextColor,
   SongMetaStyle,
-} from './common/styles';
+} from '../common/styles';
 
 const QuickPicks = () => {
   return (

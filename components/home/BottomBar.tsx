@@ -1,6 +1,6 @@
 import { View, Pressable, Text, StyleSheet } from 'react-native';
 import { Feather, MaterialIcons, Octicons } from '@expo/vector-icons';
-import { AndroidRippleColor, PrimaryTextColor } from './common/styles';
+import { AndroidRippleColor, PrimaryTextColor } from '../common/styles';
 
 const BottomBar = () => {
   return (

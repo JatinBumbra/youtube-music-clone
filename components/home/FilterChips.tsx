@@ -1,5 +1,5 @@
 import { ScrollView, Pressable, Text, StyleSheet, View } from 'react-native';
-import { AndroidRippleColor, PrimaryTextColor } from './common/styles';
+import { AndroidRippleColor, PrimaryTextColor } from '../common/styles';
 
 const FilterChips = () => {
   return (
