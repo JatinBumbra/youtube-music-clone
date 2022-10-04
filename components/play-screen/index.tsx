@@ -1,4 +1,4 @@
-import { Dispatch, SetStateAction } from 'react';
+import { Dispatch, SetStateAction, useState } from 'react';
 import { View, StyleSheet, Dimensions } from 'react-native';
 import FullDisplay from './FullDisplay';
 import MicroDisplay from './MicroDisplay';
@@ -13,12 +13,18 @@ const PlayScreen = ({
   const height = open ? Dimensions.get('window').height : undefined;
   const bottom = open ? undefined : 52;
 
+  const [percent, setPercent] = useState<number>(0);
+
   return (
     <View style={{ ...styles.container, height, bottom }}>
       {open ? (
-        <FullDisplay setOpen={setOpen} />
+        <FullDisplay
+          percent={percent}
+          setPercent={setPercent}
+          setOpen={setOpen}
+        />
       ) : (
-        <MicroDisplay setOpen={setOpen} />
+        <MicroDisplay percent={percent} setOpen={setOpen} />
       )}
     </View>
   );

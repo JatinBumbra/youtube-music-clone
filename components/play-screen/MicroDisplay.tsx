@@ -10,8 +10,10 @@ import {
 } from '../common/styles';
 
 const MicroDisplay = ({
+  percent,
   setOpen,
 }: {
+  percent: number;
   setOpen: Dispatch<SetStateAction<boolean>>;
 }) => {
   return (
@@ -62,7 +64,7 @@ const MicroDisplay = ({
         </View>
       </View>
       <View style={styles.track}>
-        <View style={{ ...styles.roller, width: '50%' }}></View>
+        <View style={{ ...styles.roller, width: `${percent * 100}%` }}></View>
       </View>
     </View>
   );

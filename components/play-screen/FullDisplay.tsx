@@ -1,5 +1,12 @@
-import { Dispatch, SetStateAction } from 'react';
-import { View, StyleSheet, Dimensions, Pressable, Text } from 'react-native';
+import { Dispatch, SetStateAction, useState } from 'react';
+import {
+  View,
+  StyleSheet,
+  Dimensions,
+  Pressable,
+  Text,
+  GestureResponderEvent,
+} from 'react-native';
 import { Entypo, Feather, MaterialIcons, Ionicons } from '@expo/vector-icons';
 import {
   AndroidRippleColor,
@@ -7,10 +14,15 @@ import {
   PrimaryTextColor,
   SecondaryTextColor,
 } from '../common/styles';
+import Slider from '@react-native-community/slider';
 
 const FullDisplay = ({
+  percent,
+  setPercent,
   setOpen,
 }: {
+  percent: number;
+  setPercent: Dispatch<SetStateAction<number>>;
   setOpen: Dispatch<SetStateAction<boolean>>;
 }) => {
   return (
@@ -37,11 +49,16 @@ const FullDisplay = ({
         <Text style={styles.artist}>Eminem</Text>
 
         <View style={styles.playTimeContainer}>
-          <View style={styles.track}>
-            <View style={{ ...styles.roller, width: '50%' }}>
-              <View style={{ ...styles.controlDot, left: '100%' }}></View>
-            </View>
-          </View>
+          <Slider
+            minimumValue={0}
+            maximumValue={1}
+            thumbTintColor={PrimaryTextColor}
+            minimumTrackTintColor={PrimaryTextColor}
+            maximumTrackTintColor={SecondaryTextColor}
+            tapToSeek
+            value={percent}
+            onValueChange={setPercent}
+          />
           <View style={styles.controls}>
             <Text style={styles.time}>2:00</Text>
             <Text style={styles.time}>4:00</Text>
