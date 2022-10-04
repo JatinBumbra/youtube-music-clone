@@ -21,41 +21,40 @@ import { useNavigation } from '@react-navigation/native';
 const QuickPicks = () => {
   const navigate = useNavigation();
 
+  const array = Array(11).fill(1);
+  const array2d = [];
+
+  while (array.length) array2d.push(array.splice(0, 4));
+
   return (
     <SectionContainer>
       <Text style={styles.lead}>Start radio based on a song</Text>
       <SectionTitle>Quick Picks</SectionTitle>
       <View style={{ marginTop: -6 }}>
         <ScrollView horizontal>
-          {Array(4)
-            .fill(1)
-            .map((_, i) => (
-              <View key={i} style={styles.songsBatchContainer}>
-                {Array(4)
-                  .fill(i)
-                  .map((i, j) => (
-                    <Pressable
-                      android_ripple={{ color: AndroidRippleColor }}
-                      onPress={() => navigate.navigate('Player')}
-                      style={styles.songItem}
-                      key={i + j}
-                    >
-                      <View style={styles.ablumImageContainer}></View>
-                      <View style={styles.songMetaDataContainer}>
-                        <Text style={styles.songTitle}>
-                          Cinderella Man {i + j}
-                        </Text>
-                        <Text style={SongMetaStyle}>Eminem</Text>
-                      </View>
-                      <MaterialCommunityIcons
-                        name='dots-vertical'
-                        size={24}
-                        color={SecondaryTextColor}
-                      />
-                    </Pressable>
-                  ))}
-              </View>
-            ))}
+          {array2d.map((subarray, i) => (
+            <View key={i} style={styles.songsBatchContainer}>
+              {subarray.map((_, j) => (
+                <Pressable
+                  android_ripple={{ color: AndroidRippleColor }}
+                  onPress={() => navigate.navigate('Player')}
+                  style={styles.songItem}
+                  key={i + j}
+                >
+                  <View style={styles.ablumImageContainer}></View>
+                  <View style={styles.songMetaDataContainer}>
+                    <Text style={styles.songTitle}>Cinderella Man {i + j}</Text>
+                    <Text style={SongMetaStyle}>Eminem</Text>
+                  </View>
+                  <MaterialCommunityIcons
+                    name='dots-vertical'
+                    size={24}
+                    color={SecondaryTextColor}
+                  />
+                </Pressable>
+              ))}
+            </View>
+          ))}
         </ScrollView>
       </View>
     </SectionContainer>
