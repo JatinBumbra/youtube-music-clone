@@ -1,25 +1,60 @@
-import { View, ScrollView, Text, StyleSheet, Pressable } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
+import { useState, useEffect } from 'react';
+import {
+  View,
+  ScrollView,
+  Text,
+  StyleSheet,
+  Pressable,
+  Image,
+} from 'react-native';
+import { ISong } from '../../@types/interfaces';
+import { useAppContext } from '../../context';
 import SectionContainer from '../common/SectionContainer';
 import SectionTitle from '../common/SectionTitle';
 import { PlaceholderBgColor, SongTitleStyle } from '../common/styles';
 
 const ListenAgain = () => {
-  const array = Array(11).fill(1);
-  const array2d = [];
+  const navigation = useNavigation();
 
-  while (array.length) array2d.push(array.splice(0, 2));
+  const { songs, setSelectedSongId } = useAppContext();
+
+  const [data, setData] = useState<ISong[][]>([]);
+
+  useEffect(() => {
+    const array = songs.slice(18, 37);
+    const array2d = [];
+
+    while (array.length) array2d.push(array.splice(0, 2));
+
+    setData(array2d);
+  }, [songs]);
 
   return (
     <SectionContainer>
       <SectionTitle>Listen Again</SectionTitle>
       <View>
         <ScrollView horizontal>
-          {array2d.map((subarray, i) => (
+          {data.map((subarray, i) => (
             <View key={i}>
-              {subarray.map((_, i) => (
-                <Pressable key={i} onPress={() => {}} style={styles.songItem}>
-                  <View style={styles.albumCoverContainer}></View>
-                  <Text style={SongTitleStyle}>Cinderella Man</Text>
+              {subarray.map((song) => (
+                <Pressable
+                  key={song.id}
+                  onPress={() => {
+                    navigation.navigate('Player');
+                    setSelectedSongId(song.id);
+                  }}
+                  style={styles.songItem}
+                >
+                  <Image
+                    source={{ uri: song.cover }}
+                    style={styles.albumCoverContainer}
+                  />
+                  <Text style={SongTitleStyle}>
+                    {song.name.length > 10
+                      ? song.name.slice(0, 10) + '...'
+                      : song.name}
+                  </Text>
                 </Pressable>
               ))}
             </View>
@@ -34,7 +69,7 @@ export default ListenAgain;
 
 const styles = StyleSheet.create({
   songItem: {
-    marginRight: 16,
+    marginRight: 24,
     marginBottom: 24,
   },
   albumCoverContainer: {

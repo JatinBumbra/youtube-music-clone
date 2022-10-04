@@ -1,3 +1,4 @@
+import { useState, useEffect } from 'react';
 import {
   View,
   StyleSheet,
@@ -5,6 +6,7 @@ import {
   Pressable,
   ScrollView,
   Dimensions,
+  Image,
 } from 'react-native';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import SectionTitle from '../common/SectionTitle';
@@ -17,14 +19,24 @@ import {
   SongMetaStyle,
 } from '../common/styles';
 import { useNavigation } from '@react-navigation/native';
+import { useAppContext } from '../../context';
+import { ISong } from '../../@types/interfaces';
 
 const QuickPicks = () => {
-  const navigate = useNavigation();
+  const { songs, setSelectedSongId } = useAppContext();
 
-  const array = Array(11).fill(1);
-  const array2d = [];
+  const [data, setData] = useState<ISong[][]>([]);
 
-  while (array.length) array2d.push(array.splice(0, 4));
+  const navigation = useNavigation();
+
+  useEffect(() => {
+    const array = songs.slice(0, 18);
+    const array2d = [];
+
+    while (array.length) array2d.push(array.splice(0, 4));
+
+    setData(array2d);
+  }, [songs]);
 
   return (
     <SectionContainer>
@@ -32,19 +44,25 @@ const QuickPicks = () => {
       <SectionTitle>Quick Picks</SectionTitle>
       <View style={{ marginTop: -6 }}>
         <ScrollView horizontal>
-          {array2d.map((subarray, i) => (
+          {data.map((subarray, i) => (
             <View key={i} style={styles.songsBatchContainer}>
-              {subarray.map((_, j) => (
+              {subarray.map((song) => (
                 <Pressable
                   android_ripple={{ color: AndroidRippleColor }}
-                  onPress={() => navigate.navigate('Player')}
+                  onPress={() => {
+                    navigation.navigate('Player');
+                    setSelectedSongId(song.id);
+                  }}
                   style={styles.songItem}
-                  key={i + j}
+                  key={song.id}
                 >
-                  <View style={styles.ablumImageContainer}></View>
+                  <Image
+                    source={{ uri: song.cover }}
+                    style={styles.ablumImageContainer}
+                  />
                   <View style={styles.songMetaDataContainer}>
-                    <Text style={styles.songTitle}>Cinderella Man {i + j}</Text>
-                    <Text style={SongMetaStyle}>Eminem</Text>
+                    <Text style={styles.songTitle}>{song.name}</Text>
+                    <Text style={SongMetaStyle}>{song.artist}</Text>
                   </View>
                   <MaterialCommunityIcons
                     name='dots-vertical'

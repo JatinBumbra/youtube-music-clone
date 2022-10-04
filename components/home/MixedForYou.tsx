@@ -1,3 +1,4 @@
+import { useState, useEffect } from 'react';
 import {
   ScrollView,
   Text,
@@ -5,7 +6,11 @@ import {
   StyleSheet,
   Dimensions,
   Pressable,
+  Image,
 } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
+import { ISong } from '../../@types/interfaces';
+import { useAppContext } from '../../context';
 import SectionContainer from '../common/SectionContainer';
 import SectionTitle from '../common/SectionTitle';
 import {
@@ -15,23 +20,38 @@ import {
 } from '../common/styles';
 
 const MixedForYou = () => {
+  const { songs, setSelectedSongId } = useAppContext();
+
+  const navigation = useNavigation();
+
+  const [data, setData] = useState<ISong[]>([]);
+
+  useEffect(() => {
+    setData(songs.slice(45, 50));
+  }, [songs]);
+
   return (
     <SectionContainer>
       <SectionTitle>Mixed For You</SectionTitle>
       <View>
         <ScrollView horizontal>
-          {Array(10)
-            .fill(1)
-            .map((_, i) => (
-              <Pressable style={styles.item} key={i} onPress={() => {}}>
-                <View style={styles.cover}></View>
-                <Text style={SongTitleStyle}>My supermix</Text>
-                <Text style={SongMetaStyle}>
-                  Lorem ipsum, dolor sit amet consectetur adipisicing elit.
-                  Dolorem, vitae.
-                </Text>
-              </Pressable>
-            ))}
+          {data.map((song, i) => (
+            <Pressable
+              style={styles.item}
+              key={song.id}
+              onPress={() => {
+                navigation.navigate('Player');
+                setSelectedSongId(song.id);
+              }}
+            >
+              <Image source={{ uri: song.cover }} style={styles.cover} />
+              <Text style={SongTitleStyle}>My supermix</Text>
+              <Text style={SongMetaStyle}>
+                Lorem ipsum, dolor sit amet consectetur adipisicing elit.
+                Dolorem, vitae.
+              </Text>
+            </Pressable>
+          ))}
         </ScrollView>
       </View>
     </SectionContainer>

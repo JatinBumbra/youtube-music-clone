@@ -1,5 +1,12 @@
-import { useState } from 'react';
-import { View, StyleSheet, Dimensions, Pressable, Text } from 'react-native';
+import { useState, useEffect } from 'react';
+import {
+  View,
+  StyleSheet,
+  Dimensions,
+  Pressable,
+  Text,
+  Image,
+} from 'react-native';
 import { Entypo, Feather, MaterialIcons, Ionicons } from '@expo/vector-icons';
 import {
   AndroidRippleColor,
@@ -10,11 +17,20 @@ import {
 import Slider from '@react-native-community/slider';
 import ScreenContainer from '../common/ScreenContainer';
 import { useNavigation } from '@react-navigation/native';
+import { useAppContext } from '../../context';
+import { ISong } from '../../@types/interfaces';
 
 const FullDisplay = () => {
+  const { songs, selectedSongId } = useAppContext();
+
   const navigation = useNavigation();
 
+  const [song, setSong] = useState<ISong>();
   const [percent, setPercent] = useState<number>(0);
+
+  useEffect(() => {
+    if (selectedSongId) setSong(songs.find((sn) => sn.id === selectedSongId));
+  }, [selectedSongId, songs]);
 
   return (
     <ScreenContainer>
@@ -36,13 +52,13 @@ const FullDisplay = () => {
           </Pressable>
         </View>
         <View style={styles.mainContent}>
-          <View style={styles.cover}></View>
+          <Image source={{ uri: song?.cover }} style={styles.cover} />
           <View style={styles.titleContainer}>
             <Feather name='thumbs-down' size={24} color={SecondaryTextColor} />
-            <Text style={styles.title}>Cinderella Man</Text>
+            <Text style={styles.title}>{song?.name}</Text>
             <Feather name='thumbs-up' size={24} color={SecondaryTextColor} />
           </View>
-          <Text style={styles.artist}>Eminem</Text>
+          <Text style={styles.artist}>{song?.artist}</Text>
 
           <View style={styles.playTimeContainer}>
             <Slider
@@ -165,6 +181,7 @@ const styles = StyleSheet.create({
     color: PrimaryTextColor,
     fontWeight: '900',
     fontSize: 28,
+    textAlign: 'center',
   },
   artist: {
     marginTop: 4,

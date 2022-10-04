@@ -1,4 +1,5 @@
-import { View, StyleSheet, Pressable, Text } from 'react-native';
+import { useState, useEffect } from 'react';
+import { View, StyleSheet, Pressable, Text, Image } from 'react-native';
 import { MaterialIcons } from '@expo/vector-icons';
 import {
   AndroidRippleColor,
@@ -8,13 +9,23 @@ import {
   SongTitleStyle,
 } from '../common/styles';
 import { useNavigation } from '@react-navigation/native';
+import { useAppContext } from '../../context';
+import { ISong } from '../../@types/interfaces';
 
 const MicroDisplay = () => {
   const navigation = useNavigation();
 
+  const { songs, selectedSongId } = useAppContext();
+
+  const [song, setSong] = useState<ISong>();
+
+  useEffect(() => {
+    if (selectedSongId) setSong(songs.find((sn) => sn.id === selectedSongId));
+  }, [selectedSongId, songs]);
+
   const percent = 1;
 
-  return (
+  return selectedSongId ? (
     <View style={styles.container}>
       <View style={styles.miniPlayer}>
         <View style={styles.flexDisplay}>
@@ -22,10 +33,10 @@ const MicroDisplay = () => {
             style={styles.flexDisplay}
             onPress={() => navigation.navigate('Player')}
           >
-            <View style={styles.cover}></View>
+            <Image source={{ uri: song?.cover }} style={styles.cover} />
             <View style={styles.songInfo}>
-              <Text style={SongTitleStyle}>Cinderella Man</Text>
-              <Text style={SongMetaStyle}>Eminem</Text>
+              <Text style={SongTitleStyle}>{song?.name}</Text>
+              <Text style={SongMetaStyle}>{song?.artist}</Text>
             </View>
           </Pressable>
           <View style={styles.flexDisplay}>
@@ -68,7 +79,7 @@ const MicroDisplay = () => {
         <View style={{ ...styles.roller, width: `${percent * 100}%` }}></View>
       </View>
     </View>
-  );
+  ) : null;
 };
 
 export default MicroDisplay;
