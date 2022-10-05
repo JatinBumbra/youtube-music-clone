@@ -21,12 +21,19 @@ import { useAppContext } from '../../context';
 import { ISong } from '../../@types/interfaces';
 
 const FullDisplay = () => {
-  const { songs, selectedSongId } = useAppContext();
+  const {
+    songs,
+    audio,
+    playAudio,
+    pauseAudio,
+    playNext,
+    playPrevious,
+    selectedSongId,
+  } = useAppContext();
 
   const navigation = useNavigation();
 
   const [song, setSong] = useState<ISong>();
-  const [percent, setPercent] = useState<number>(0);
 
   useEffect(() => {
     if (selectedSongId) setSong(songs.find((sn) => sn.id === selectedSongId));
@@ -68,8 +75,7 @@ const FullDisplay = () => {
               minimumTrackTintColor={PrimaryTextColor}
               maximumTrackTintColor={SecondaryTextColor}
               tapToSeek
-              value={percent}
-              onValueChange={setPercent}
+              value={audio?.positionMillis / audio?.durationMillis || 0}
             />
             <View style={styles.controls}>
               <Text style={styles.time}>2:00</Text>
@@ -97,18 +103,18 @@ const FullDisplay = () => {
                     color={PrimaryTextColor}
                   />
                 ),
-                onPress: () => {},
+                onPress: playPrevious,
               },
               {
                 icon: (
                   <MaterialIcons
-                    name='pause'
+                    name={audio?.isPlaying ? 'pause' : 'play-arrow'}
                     size={40}
                     color={PrimaryTextColor}
                     style={styles.playControl}
                   />
                 ),
-                onPress: () => {},
+                onPress: audio?.isPlaying ? pauseAudio : playAudio,
               },
               {
                 icon: (
@@ -118,7 +124,7 @@ const FullDisplay = () => {
                     color={PrimaryTextColor}
                   />
                 ),
-                onPress: () => {},
+                onPress: playNext,
               },
               {
                 icon: (
@@ -162,7 +168,7 @@ const styles = StyleSheet.create({
   mainContent: {
     alignItems: 'center',
     padding: 24,
-    marginTop: '10%',
+    marginTop: '5%',
   },
   cover: {
     width: Dimensions.get('window').width - 64,

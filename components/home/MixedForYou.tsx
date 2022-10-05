@@ -38,7 +38,7 @@ const MixedForYou = () => {
           {data.map((song, i) => (
             <Pressable
               style={styles.item}
-              key={song.id}
+              key={i}
               onPress={() => {
                 navigation.navigate('Player');
                 setSelectedSongId(song.id);

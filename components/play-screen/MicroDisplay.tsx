@@ -15,15 +15,14 @@ import { ISong } from '../../@types/interfaces';
 const MicroDisplay = () => {
   const navigation = useNavigation();
 
-  const { songs, selectedSongId } = useAppContext();
+  const { songs, audio, selectedSongId, playAudio, pauseAudio, playNext } =
+    useAppContext();
 
   const [song, setSong] = useState<ISong>();
 
   useEffect(() => {
     if (selectedSongId) setSong(songs.find((sn) => sn.id === selectedSongId));
   }, [selectedSongId, songs]);
-
-  const percent = 1;
 
   return selectedSongId ? (
     <View style={styles.container}>
@@ -44,12 +43,12 @@ const MicroDisplay = () => {
               {
                 icon: (
                   <MaterialIcons
-                    name='pause'
+                    name={audio?.isPlaying ? 'pause' : 'play-arrow'}
                     size={24}
                     color={PrimaryTextColor}
                   />
                 ),
-                onPress: () => {},
+                onPress: audio?.isPlaying ? pauseAudio : playAudio,
               },
               {
                 icon: (
@@ -59,7 +58,7 @@ const MicroDisplay = () => {
                     color={PrimaryTextColor}
                   />
                 ),
-                onPress: () => {},
+                onPress: playNext,
               },
             ].map((item, i) => (
               <Pressable
@@ -76,7 +75,12 @@ const MicroDisplay = () => {
         </View>
       </View>
       <View style={styles.track}>
-        <View style={{ ...styles.roller, width: `${percent * 100}%` }}></View>
+        <View
+          style={{
+            ...styles.roller,
+            width: `${(audio?.positionMillis / audio?.durationMillis) * 100}%`,
+          }}
+        ></View>
       </View>
     </View>
   ) : null;
