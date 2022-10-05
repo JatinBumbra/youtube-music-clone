@@ -1,10 +1,13 @@
-import { Text, View, StyleSheet, Pressable } from 'react-native';
+import { View, StyleSheet, Pressable, Image } from 'react-native';
 import { Feather } from '@expo/vector-icons';
 
 const Header = () => {
   return (
     <View style={styles.container}>
-      <Text style={styles.logoText}>Music</Text>
+      <Image
+        source={require('../../assets/header-icon.png')}
+        style={styles.logo}
+      />
       <View style={styles.iconsContainer}>
         {['cast', 'search', 'user'].map((icon) => (
           <Pressable
@@ -34,10 +37,9 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'space-between',
   },
-  logoText: {
-    fontSize: 22,
-    fontWeight: '700',
-    color: 'white',
+  logo: {
+    height: 30,
+    width: 96,
   },
   iconsContainer: {
     flexDirection: 'row',
