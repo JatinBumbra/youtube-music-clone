@@ -34,10 +34,29 @@ const FullDisplay = () => {
   const navigation = useNavigation();
 
   const [song, setSong] = useState<ISong>();
+  const [playbackDuration, setPlaybackDuration] = useState<{
+    current: string;
+    finish: string;
+  }>({
+    current: '00:00',
+    finish: '00:00',
+  });
 
   useEffect(() => {
     if (selectedSongId) setSong(songs.find((sn) => sn.id === selectedSongId));
   }, [selectedSongId, songs]);
+
+  useEffect(() => {
+    if (audio?.isLoaded && !audio.isBuffering) {
+      let date = new Date(0);
+      date.setMilliseconds(audio.positionMillis);
+      const current = date.toISOString().slice(14, 19);
+      date = new Date(0);
+      date.setMilliseconds(audio.durationMillis);
+      const finish = date.toISOString().slice(14, 19);
+      setPlaybackDuration({ current, finish });
+    }
+  }, [audio]);
 
   return (
     <ScreenContainer>
@@ -78,8 +97,8 @@ const FullDisplay = () => {
               value={audio?.positionMillis / audio?.durationMillis || 0}
             />
             <View style={styles.controls}>
-              <Text style={styles.time}>2:00</Text>
-              <Text style={styles.time}>4:00</Text>
+              <Text style={styles.time}>{playbackDuration.current}</Text>
+              <Text style={styles.time}>{playbackDuration.finish}</Text>
             </View>
           </View>
 
