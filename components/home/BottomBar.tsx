@@ -1,5 +1,5 @@
 import { View, Pressable, Text, StyleSheet } from 'react-native';
-import { Feather, MaterialIcons, Octicons } from '@expo/vector-icons';
+import { MaterialIcons, MaterialCommunityIcons } from '@expo/vector-icons';
 import { AndroidRippleColor, PrimaryTextColor } from '../common/styles';
 
 const BottomBar = () => {
@@ -7,17 +7,29 @@ const BottomBar = () => {
     <View style={styles.container}>
       {[
         {
-          icon: <Octicons name='home' size={20} color={PrimaryTextColor} />,
+          icon: (
+            <MaterialIcons
+              name='home-filled'
+              size={20}
+              color={PrimaryTextColor}
+            />
+          ),
           label: 'Home',
         },
         {
-          icon: <Feather name='compass' size={20} color={PrimaryTextColor} />,
+          icon: (
+            <MaterialCommunityIcons
+              name='compass-outline'
+              size={20}
+              color={PrimaryTextColor}
+            />
+          ),
           label: 'Explore',
         },
         {
           icon: (
-            <MaterialIcons
-              name='library-music'
+            <MaterialCommunityIcons
+              name='music-box-multiple-outline'
               size={20}
               color={PrimaryTextColor}
             />
