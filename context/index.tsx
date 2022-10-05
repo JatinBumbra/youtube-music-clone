@@ -37,7 +37,7 @@ const AppContextProvider = ({ children }: { children: any }) => {
         }));
         setSongs(songs.reverse());
       } catch (error) {
-        console.log(error);
+        console.error('Failed to fetch the songs');
       }
     })();
   }, []);
@@ -45,30 +45,41 @@ const AppContextProvider = ({ children }: { children: any }) => {
   useEffect(() => {
     (async () => {
       if (audio?.sound) {
-        await audio.sound.unloadAsync();
+        try {
+          await audio.sound.unloadAsync();
+        } catch (error) {
+          console.error('Unable to unload the audio');
+        }
       }
       if (selectedSongId) {
-        const sn = songs.find((s) => s.id === selectedSongId);
-        const { sound } = await Audio.Sound.createAsync(
-          {
-            uri: sn!.playUrl,
-          },
-          {},
-          (status) =>
-            setAudio(
-              (prev) =>
-                ({
-                  ...prev,
-                  isPlaying: status.isPlaying,
-                  didJustFinish: status.didJustFinish,
-                  positionMillis: status.positionMillis,
-                  durationMillis: status.durationMillis,
-                  isLooping: status.isLooping,
-                } as IAudio)
-            )
-        );
+        try {
+          const sn = songs.find((s) => s.id === selectedSongId);
+          const { sound } = await Audio.Sound.createAsync(
+            {
+              uri: sn!.playUrl,
+            },
+            {},
+            (status) => {
+              setAudio(
+                (prev) =>
+                  ({
+                    ...prev,
+                    isLoaded: status.isLoaded,
+                    isBuffering: status.isBuffering,
+                    isPlaying: status.isPlaying,
+                    didJustFinish: status.didJustFinish,
+                    positionMillis: status.positionMillis,
+                    durationMillis: status.durationMillis,
+                    isLooping: status.isLooping,
+                  } as IAudio)
+              );
+            }
+          );
 
-        setAudio((prev) => ({ ...prev, sound } as IAudio));
+          setAudio((prev) => ({ ...prev, sound } as IAudio));
+        } catch (error) {
+          console.error('Unable to create the audio');
+        }
       } else {
         setAudio(undefined);
       }
@@ -76,19 +87,29 @@ const AppContextProvider = ({ children }: { children: any }) => {
   }, [selectedSongId]);
 
   useEffect(() => {
-    if (!audio?.isPlaying && !audio?.positionMillis) playAudio();
-    if (audio?.didJustFinish) playNext();
+    if (audio?.isLoaded && !audio.isBuffering) {
+      if (!audio?.isPlaying && !audio?.positionMillis) playAudio();
+      if (audio?.didJustFinish) playNext();
+    }
   }, [audio]);
 
   const playAudio = async () => {
-    if (!audio?.isPlaying) {
-      await audio?.sound.playAsync();
+    try {
+      if (!audio?.isPlaying) {
+        await audio?.sound.playAsync();
+      }
+    } catch (error) {
+      console.error('Unable to play the audio');
     }
   };
 
   const pauseAudio = async () => {
-    if (audio?.isPlaying) {
-      await audio?.sound.pauseAsync();
+    try {
+      if (audio?.isPlaying) {
+        await audio?.sound.pauseAsync();
+      }
+    } catch (error) {
+      console.error('Unable to pause the audio');
     }
   };
 

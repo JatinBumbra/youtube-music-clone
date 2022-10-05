@@ -11,6 +11,8 @@ export interface ISong {
 
 export interface IAudio {
   sound: Audio.Sound;
+  isLoaded: boolean;
+  isBuffering: boolean;
   isPlaying: boolean;
   didJustFinish: boolean;
   isLooping: boolean;
