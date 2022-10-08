@@ -2,6 +2,7 @@
   "expo": {
     "name": "youtube-music-clone",
     "slug": "youtube-music-clone",
+    "owner": "jatinbumbra",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
